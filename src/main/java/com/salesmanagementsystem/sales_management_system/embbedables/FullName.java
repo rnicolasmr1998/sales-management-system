@@ -1,9 +1,10 @@
-package com.salesmanagementsystem.sales_management_system.user;
+package com.salesmanagementsystem.sales_management_system.embbedables;
 
 import org.springframework.util.Assert;
 
 import com.google.common.base.MoreObjects;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -11,18 +12,25 @@ import lombok.Getter;
 @Embeddable
 @Getter
 @EqualsAndHashCode
-public class UserName {
+public class FullName {
+    @Column(name = "nombre")
     private String firstName;
+
+    @Column(name = "apellido")
     private String lastName;
 
-    protected UserName() {
+    protected FullName() {
     }
 
-    public UserName(String firstName, String lastName) {
+    public FullName(String firstName, String lastName) {
         Assert.hasText(firstName, "El nombre del usuario no puede estar vacío");
         Assert.hasText(lastName, "El apellido del usuario no puede estar vacío");
         this.firstName = firstName;
         this.lastName = lastName;
+    }
+
+    public String getFullName() {
+        return "%s %s".formatted(firstName, lastName);
     }
 
     @Override

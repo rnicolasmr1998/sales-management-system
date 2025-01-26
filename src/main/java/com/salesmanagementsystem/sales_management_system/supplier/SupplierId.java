@@ -1,8 +1,8 @@
 package com.salesmanagementsystem.sales_management_system.supplier;
 
-import io.github.wimdeblauwe.jpearl.AbstractEntityId;
-
 import java.util.UUID;
+
+import io.github.wimdeblauwe.jpearl.AbstractEntityId;
 
 public class SupplierId extends AbstractEntityId<UUID> {
 
@@ -11,7 +11,7 @@ public class SupplierId extends AbstractEntityId<UUID> {
    */
    protected SupplierId() {
    }
-
+    
    public SupplierId(UUID id) {
        super(id);
    }

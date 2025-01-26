@@ -36,3 +36,6 @@ build/
 # Excludes for npm
 node_modules
 node
+
+# Exclude local properties
+src/resources/application-local.properties
