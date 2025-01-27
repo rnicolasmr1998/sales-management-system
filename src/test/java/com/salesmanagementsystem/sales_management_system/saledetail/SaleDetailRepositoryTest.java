@@ -1,4 +1,4 @@
-package com.salesmanagementsystem.sales_management_system.supplier;
+package com.salesmanagementsystem.sales_management_system.saledetail;
 
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.junit.jupiter.api.BeforeEach;
@@ -6,26 +6,22 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 
-import com.salesmanagementsystem.sales_management_system.embbedables.PhoneNumber;
-
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
-
-import java.time.LocalDate;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaTest
-class SupplierRepositoryTest {
-    private final SupplierRepository repository;
+class SaleDetailRepositoryTest {
+    private final SaleDetailRepository repository;
     private final JdbcTemplate jdbcTemplate;
     @PersistenceContext
     private EntityManager entityManager;
 
     @Autowired
-    SupplierRepositoryTest(SupplierRepository repository,
-                            JdbcTemplate jdbcTemplate) {
+    SaleDetailRepositoryTest(SaleDetailRepository repository,
+                           JdbcTemplate jdbcTemplate) {
         this.repository = repository;
         this.jdbcTemplate = jdbcTemplate;
     }
@@ -36,13 +32,13 @@ class SupplierRepositoryTest {
     }
 
     @Test
-    void testSaveSupplier() {
-        SupplierId id = repository.nextId();
-        repository.save(new Supplier());
+    void testSaveSaleDetail() {
+        SaleDetailId id = repository.nextId();
+        repository.save(new SaleDetail());
 
         entityManager.flush();
 
-        UUID idInDb = jdbcTemplate.queryForObject("SELECT id FROM supplier", UUID.class);
+        UUID idInDb = jdbcTemplate.queryForObject("SELECT id FROM saledetail", UUID.class);
         assertThat(idInDb).isEqualTo(id.getId());
     }
 }

@@ -16,16 +16,26 @@ public class CreateUserParameters {
     private final LocalDate birthday;
     private final Email email;
     private final PhoneNumber phoneNumber;
+    private final Boolean userStatus;
+    private final LocalDate registrationDate;
+    private final LocalDate deleteDate;
+
 
     public CreateUserParameters(FullName fullName,
                                 Gender gender,
                                 LocalDate birthday,
                                 Email email,
-                                PhoneNumber phoneNumber) {
+                                PhoneNumber phoneNumber,
+                                Boolean userStatus,
+                                LocalDate registrationDate,
+                                LocalDate deleteDate) {
         this.fullName = fullName;
         this.gender = gender;
         this.birthday = birthday;
         this.email = email;
         this.phoneNumber = phoneNumber;
+        this.userStatus = userStatus;
+        this.registrationDate = registrationDate;
+        this.deleteDate = deleteDate;
     }
 }

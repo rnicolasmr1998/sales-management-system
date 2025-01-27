@@ -1,4 +1,4 @@
-package com.salesmanagementsystem.sales_management_system.purchase_detail;
+package com.salesmanagementsystem.sales_management_system.payment;
 
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.junit.jupiter.api.BeforeEach;
@@ -13,14 +13,14 @@ import java.util.UUID;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaTest
-class purchase_detailRepositoryTest {
-    private final purchase_detailRepository repository;
+class PaymentRepositoryTest {
+    private final PaymentRepository repository;
     private final JdbcTemplate jdbcTemplate;
     @PersistenceContext
     private EntityManager entityManager;
 
     @Autowired
-    purchase_detailRepositoryTest(purchase_detailRepository repository,
+    PaymentRepositoryTest(PaymentRepository repository,
                            JdbcTemplate jdbcTemplate) {
         this.repository = repository;
         this.jdbcTemplate = jdbcTemplate;
@@ -32,13 +32,13 @@ class purchase_detailRepositoryTest {
     }
 
     @Test
-    void testSavepurchase_detail() {
-        purchase_detailId id = repository.nextId();
-        repository.save(new purchase_detail(id));
+    void testSavePayment() {
+        PaymentId id = repository.nextId();
+        repository.save(new Payment());
 
         entityManager.flush();
 
-        UUID idInDb = jdbcTemplate.queryForObject("SELECT id FROM purchase_detail", UUID.class);
+        UUID idInDb = jdbcTemplate.queryForObject("SELECT id FROM payment", UUID.class);
         assertThat(idInDb).isEqualTo(id.getId());
     }
 }

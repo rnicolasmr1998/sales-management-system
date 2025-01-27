@@ -13,14 +13,14 @@ import java.util.UUID;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaTest
-class saleRepositoryTest {
-    private final saleRepository repository;
+class SaleRepositoryTest {
+    private final SaleRepository repository;
     private final JdbcTemplate jdbcTemplate;
     @PersistenceContext
     private EntityManager entityManager;
 
     @Autowired
-    saleRepositoryTest(saleRepository repository,
+    SaleRepositoryTest(SaleRepository repository,
                            JdbcTemplate jdbcTemplate) {
         this.repository = repository;
         this.jdbcTemplate = jdbcTemplate;
@@ -32,9 +32,9 @@ class saleRepositoryTest {
     }
 
     @Test
-    void testSavesale() {
-        saleId id = repository.nextId();
-        repository.save(new sale(id));
+    void testSaveSale() {
+        SaleId id = repository.nextId();
+        repository.save(new Sale());
 
         entityManager.flush();
 

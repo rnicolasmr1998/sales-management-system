@@ -42,7 +42,10 @@ public class DatabaseInitializer implements CommandLineRunner{
         LocalDate birthday = LocalDate.ofInstant(faker.date().birthday(10, 40).toInstant(), ZoneId.systemDefault());
         Email email = new Email(faker.internet().emailAddress(generateEmailLocalPart(fullName)));
         PhoneNumber phoneNumber = new PhoneNumber(faker.phoneNumber().phoneNumber());
-        return new CreateUserParameters(fullName, gender, birthday, email, phoneNumber);
+        Boolean userStatus = faker.bool().bool();
+        LocalDate registrationDate = LocalDate.now();
+        LocalDate deleteDate = null;
+        return new CreateUserParameters(fullName, gender, birthday, email, phoneNumber, userStatus, registrationDate, deleteDate);
     }
     
     private String generateEmailLocalPart(FullName fullName) {

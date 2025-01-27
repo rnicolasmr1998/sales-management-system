@@ -34,7 +34,7 @@ class PurchaseRepositoryTest {
     @Test
     void testSavePurchase() {
         PurchaseId id = repository.nextId();
-        repository.save(new Purchase(id));
+        repository.save(new Purchase());
 
         entityManager.flush();
 

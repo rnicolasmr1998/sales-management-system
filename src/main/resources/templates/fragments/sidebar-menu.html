@@ -97,8 +97,6 @@
                 <a
                     th:replace="~{fragments/sidebar-buttons :: desktop-button(link='#', title=#{menu.dashboard}, menuItem='dashboard', icon='dashboard')}"></a>
                 <a
-                    th:replace="~{fragments/sidebar-buttons :: mobile-button(link=@{/users}, title=#{menu.users}, menuItem='users', icon='users')}"></a>
-                <a
                     th:replace="~{fragments/sidebar-buttons :: mobile-button(link='#', title=#{menu.customers}, menuItem='customers', icon='customers')}"></a>
                 <a
                     th:replace="~{fragments/sidebar-buttons :: mobile-button(link='#', title=#{menu.sales}, menuItem='sales', icon='sales')}"></a>
@@ -108,6 +106,11 @@
                     th:replace="~{fragments/sidebar-buttons :: mobile-button(link='#', title=#{menu.products}, menuItem='products', icon='products')}"></a>
                 <a
                     th:replace="~{fragments/sidebar-buttons :: mobile-button(link='#', title=#{menu.suppliers}, menuItem='suppliers', icon='suppliers')}"></a>
+                <a
+                    th:replace="~{fragments/sidebar-buttons :: mobile-button(link='#', title=#{menu.payments}, menuItem='payments', icon='payments')}"></a>
+                <a
+                    th:replace="~{fragments/sidebar-buttons :: mobile-button(link=@{/users}, title=#{menu.users}, menuItem='users', icon='users')}"></a>
+
             </nav>
             <!-- end::sidebar[] -->
         </div>

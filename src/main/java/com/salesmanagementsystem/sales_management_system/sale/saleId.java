@@ -4,15 +4,15 @@ import io.github.wimdeblauwe.jpearl.AbstractEntityId;
 
 import java.util.UUID;
 
-public class saleId extends AbstractEntityId<UUID> {
+public class SaleId extends AbstractEntityId<UUID> {
 
    /**
    * Default constructor for JPA
    */
-   protected saleId() {
+   protected SaleId() {
    }
 
-   public saleId(UUID id) {
+   public SaleId(UUID id) {
        super(id);
    }
 }

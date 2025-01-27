@@ -22,7 +22,10 @@ public class UserServiceImpl implements UserService {
                             parameters.getGender(),
                             parameters.getBirthday(),
                             parameters.getEmail(),
-                            parameters.getPhoneNumber());
+                            parameters.getPhoneNumber(),
+                            parameters.getUserStatus(),
+                            parameters.getRegistrationDate(),
+                            parameters.getDeleteDate());
         return repository.save(user);
     }
 

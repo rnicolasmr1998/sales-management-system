@@ -6,8 +6,13 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 
+import com.salesmanagementsystem.sales_management_system.embbedables.Category;
+import com.salesmanagementsystem.sales_management_system.embbedables.Measure;
+
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
+
+import java.time.LocalDate;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -21,7 +26,7 @@ class ProductRepositoryTest {
 
     @Autowired
     ProductRepositoryTest(ProductRepository repository,
-                           JdbcTemplate jdbcTemplate) {
+                            JdbcTemplate jdbcTemplate) {
         this.repository = repository;
         this.jdbcTemplate = jdbcTemplate;
     }
@@ -34,7 +39,7 @@ class ProductRepositoryTest {
     @Test
     void testSaveProduct() {
         ProductId id = repository.nextId();
-        repository.save(new Product(id));
+        repository.save(new Product());
 
         entityManager.flush();
 

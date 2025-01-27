@@ -49,7 +49,10 @@ class UserRepositoryTest {
                                 Gender.HOMBRE,
                                 LocalDate.of(2001, Month.FEBRUARY, 17),
                                 new Email("tommy.walton@gmail.com"),
-                                new PhoneNumber("959317763")));
+                                new PhoneNumber("959317763"),
+                                true,
+                                LocalDate.now(),
+                                null));
 
         entityManager.flush();
         assertThat(jdbcTemplate.queryForObject("SELECT id FROM usuario", UUID.class)).isEqualTo(id.getId());
@@ -59,6 +62,9 @@ class UserRepositoryTest {
         assertThat(jdbcTemplate.queryForObject("SELECT fecha_nacimiento FROM usuario", LocalDate.class)).isEqualTo("2001-02-17");
         assertThat(jdbcTemplate.queryForObject("SELECT correo_electronico FROM usuario", String.class)).isEqualTo("tommy.walton@gmail.com");
         assertThat(jdbcTemplate.queryForObject("SELECT numero_celular FROM usuario", String.class)).isEqualTo("959317763");
+        assertThat(jdbcTemplate.queryForObject("SELECT estado_usuario FROM usuario", Boolean.class)).isEqualTo(true);
+        assertThat(jdbcTemplate.queryForObject("SELECT fecha_registro FROM usuario", LocalDate.class)).isEqualTo(LocalDate.now());
+        assertThat(jdbcTemplate.queryForObject("SELECT fecha_eliminacion FROM usuario", LocalDate.class)).isNull();
     }
 
     @TestConfiguration
