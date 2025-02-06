@@ -5,12 +5,11 @@ import org.springframework.util.Assert;
 import com.google.common.base.MoreObjects;
 
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 @EqualsAndHashCode
+@NoArgsConstructor
 public class PhoneNumber {
     private String phoneNumber;
-
-    protected PhoneNumber() {
-    }
 
     public PhoneNumber(String phoneNumber) {
         Assert.hasText(phoneNumber, "El número de celular no puede estar vacío.");

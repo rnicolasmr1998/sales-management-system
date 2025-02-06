@@ -60,19 +60,21 @@
                 <!-- tag::mobile-nav[] -->
                 <nav class="space-y-1 px-2">
                     <a
-                        th:replace="~{fragments/sidebar-buttons :: desktop-button(link='#', title=#{menu.dashboard}, menuItem='dashboard', icon='dashboard')}"></a>
-                    <a
-                        th:replace="~{fragments/sidebar-buttons :: mobile-button(link=@{/users}, title=#{menu.users}, menuItem='users', icon='users')}"></a>
-                    <a
-                        th:replace="~{fragments/sidebar-buttons :: mobile-button(link='#', title=#{menu.customers}, menuItem='customers', icon='customers')}"></a>
-                    <a
-                        th:replace="~{fragments/sidebar-buttons :: mobile-button(link='#', title=#{menu.sales}, menuItem='sales', icon='sales')}"></a>
-                    <a
-                        th:replace="~{fragments/sidebar-buttons :: mobile-button(link='#', title=#{menu.purchases}, menuItem='purchases', icon='purchases')}"></a>
-                    <a
-                        th:replace="~{fragments/sidebar-buttons :: mobile-button(link='#', title=#{menu.products}, menuItem='products', icon='products')}"></a>
-                    <a
-                        th:replace="~{fragments/sidebar-buttons :: mobile-button(link='#', title=#{menu.suppliers}, menuItem='suppliers', icon='suppliers')}"></a>
+                    th:replace="~{fragments/sidebar-buttons :: mobile-button(link='#', title=#{menu.dashboard}, menuItem='dashboard', icon='dashboard')}"></a>
+                <a
+                    th:replace="~{fragments/sidebar-buttons :: mobile-button(link=@{/customers}, title=#{menu.customers}, menuItem='customers', icon='customers')}"></a>
+                <a
+                    th:replace="~{fragments/sidebar-buttons :: mobile-button(link='#', title=#{menu.sales}, menuItem='sales', icon='sales')}"></a>
+                <a
+                    th:replace="~{fragments/sidebar-buttons :: mobile-button(link='#', title=#{menu.purchases}, menuItem='purchases', icon='purchases')}"></a>
+                <a
+                    th:replace="~{fragments/sidebar-buttons :: mobile-button(link=@{/products}, title=#{menu.products}, menuItem='products', icon='products')}"></a>
+                <a
+                    th:replace="~{fragments/sidebar-buttons :: mobile-button(link='#', title=#{menu.suppliers}, menuItem='suppliers', icon='suppliers')}"></a>
+                <a
+                    th:replace="~{fragments/sidebar-buttons :: mobile-button(link='#', title=#{menu.payments}, menuItem='payments', icon='payments')}"></a>
+                <a
+                    th:replace="~{fragments/sidebar-buttons :: mobile-button(link=@{/users}, title=#{menu.users}, menuItem='users', icon='users')}"></a>
                 </nav>
                 <!-- end::mobile-nav[] -->
             </div>
@@ -97,19 +99,19 @@
                 <a
                     th:replace="~{fragments/sidebar-buttons :: desktop-button(link='#', title=#{menu.dashboard}, menuItem='dashboard', icon='dashboard')}"></a>
                 <a
-                    th:replace="~{fragments/sidebar-buttons :: mobile-button(link='#', title=#{menu.customers}, menuItem='customers', icon='customers')}"></a>
+                    th:replace="~{fragments/sidebar-buttons :: desktop-button(link=@{/customers}, title=#{menu.customers}, menuItem='customers', icon='customers')}"></a>
                 <a
-                    th:replace="~{fragments/sidebar-buttons :: mobile-button(link='#', title=#{menu.sales}, menuItem='sales', icon='sales')}"></a>
+                    th:replace="~{fragments/sidebar-buttons :: desktop-button(link='#', title=#{menu.sales}, menuItem='sales', icon='sales')}"></a>
                 <a
-                    th:replace="~{fragments/sidebar-buttons :: mobile-button(link='#', title=#{menu.purchases}, menuItem='purchases', icon='purchases')}"></a>
+                    th:replace="~{fragments/sidebar-buttons :: desktop-button(link='#', title=#{menu.purchases}, menuItem='purchases', icon='purchases')}"></a>
                 <a
-                    th:replace="~{fragments/sidebar-buttons :: mobile-button(link='#', title=#{menu.products}, menuItem='products', icon='products')}"></a>
+                    th:replace="~{fragments/sidebar-buttons :: desktop-button(link=@{/products}, title=#{menu.products}, menuItem='products', icon='products')}"></a>
                 <a
-                    th:replace="~{fragments/sidebar-buttons :: mobile-button(link='#', title=#{menu.suppliers}, menuItem='suppliers', icon='suppliers')}"></a>
+                    th:replace="~{fragments/sidebar-buttons :: desktop-button(link='#', title=#{menu.suppliers}, menuItem='suppliers', icon='suppliers')}"></a>
                 <a
-                    th:replace="~{fragments/sidebar-buttons :: mobile-button(link='#', title=#{menu.payments}, menuItem='payments', icon='payments')}"></a>
+                    th:replace="~{fragments/sidebar-buttons :: desktop-button(link='#', title=#{menu.payments}, menuItem='payments', icon='payments')}"></a>
                 <a
-                    th:replace="~{fragments/sidebar-buttons :: mobile-button(link=@{/users}, title=#{menu.users}, menuItem='users', icon='users')}"></a>
+                    th:replace="~{fragments/sidebar-buttons :: desktop-button(link=@{/users}, title=#{menu.users}, menuItem='users', icon='users')}"></a>
 
             </nav>
             <!-- end::sidebar[] -->

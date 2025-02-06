@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{layout/layout}" th:with="activeMenuItem='customers'">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clientes</title>
+</head>
+
+<body>
+    <div layout:fragment="page-content">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
+            <h1 class="text-2xl font-semibold text-gray-900" th:text="#{customers.title}"></h1>
+        </div>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
+            <div class="py-4">
+                <div class="flex flex-col">
+                    <div class="-my-2 py-2 overflow-x-auto sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8">
+                        <div
+                            class="align-middle inline-block min-w-full shadow overflowhidden rounded-md sm:rounded-lg border-b border-gray-200">
+                            <table class="min-w-full">
+                                <thead>
+                                    <tr>
+                                        <th th:replace="fragments/table :: header(title=#{customer.name})"></th>
+                                        <th th:replace="fragments/table :: header(title=#{customer.gender}, hideOnMobile='true')"></th>
+                                        <th th:replace="fragments/table :: header(title=#{customer.phonenumber}, hideOnMobile='true')"></th>
+                                        <th th:replace="fragments/table :: header(title=#{customer.debit}, hideOnMobile='true')"></th>
+                                        <th th:replace="fragments/table :: header(title='')"></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="bg-white" th:each="customer : ${customers}">
+                                        <td th:replace="fragments/table :: data(contents=${customer.fullName.fullName}, primary='true')"></td>
+                                        <td th:replace="fragments/table :: data(contents=${customer.gender}, hideOnMobile='true')"></td>
+                                        <td th:replace="fragments/table :: data(contents=${customer.phoneNumber.asString()}, hideOnMobile='true')"></td>
+                                        <td th:replace="fragments/table :: data(contents=${customer.debt}, hideOnMobile='true')"></td>
+                                        <td th:replace="fragments/table :: dataWithLink(linkText=#{edit}, linkUrl='#')"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            
+                            <div th:replace="~{fragments/pagination :: controls(page=${customers})}"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

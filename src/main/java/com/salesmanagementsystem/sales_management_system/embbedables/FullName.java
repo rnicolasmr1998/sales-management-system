@@ -30,7 +30,7 @@ public class FullName {
     }
 
     public String getFullName() {
-        return "%s %s".formatted(firstName, lastName);
+        return String.format("%s %s", firstName.toUpperCase(), lastName.toUpperCase());
     }
 
     @Override
