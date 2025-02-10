@@ -4,8 +4,12 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.UUID;
 
+import com.salesmanagementsystem.sales_management_system.embbedables.Currency;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -13,13 +17,13 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "detalle_compra")
-@Getter
-@AllArgsConstructor
+@Data
+@NoArgsConstructor
 public class PurchaseDetail {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -44,6 +48,11 @@ public class PurchaseDetail {
     private BigDecimal subtotal;
 
     @NotNull
+    @Enumerated(EnumType.STRING)
+    @Column(name = "moneda")
+    private Currency currency;
+
+    @NotNull
     @Column(name = "estado_detalle_compra")
     private Boolean saleDetailStatus;
 
@@ -57,7 +66,4 @@ public class PurchaseDetail {
 
     @Column(name = "fecha_eliminacion")
     private LocalDate deleteDate;
-
-    protected PurchaseDetail() {
-    }
 }

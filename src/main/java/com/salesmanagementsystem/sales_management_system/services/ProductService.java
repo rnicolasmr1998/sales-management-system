@@ -5,7 +5,7 @@ import org.springframework.data.domain.Pageable;
 
 import com.google.common.collect.ImmutableSet;
 import com.salesmanagementsystem.sales_management_system.entities.Product;
-import com.salesmanagementsystem.sales_management_system.forms.CreateProductParameters;
+import com.salesmanagementsystem.sales_management_system.parameters.CreateProductParameters;
 
 public interface ProductService {
     Product createProduct(CreateProductParameters parameters);

@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Clientes</title>
+    <title th:text="#{customers.title}"></title>
 </head>
 
 <body>
@@ -24,12 +24,16 @@
                                     <tr>
                                         <th th:replace="fragments/table :: header(title=#{customer.name})"></th>
                                         <th th:replace="fragments/table :: header(title=#{customer.gender}, hideOnMobile='true')"></th>
-                                        <th th:replace="fragments/table :: header(title=#{customer.phonenumber}, hideOnMobile='true')"></th>
+                                        <th th:replace="fragments/table :: header(title=#{customer.phoneNumber}, hideOnMobile='true')"></th>
                                         <th th:replace="fragments/table :: header(title=#{customer.debit}, hideOnMobile='true')"></th>
                                         <th th:replace="fragments/table :: header(title='')"></th>
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    <tr th:if="${customers.isEmpty()}">
+                                        <td colspan="6" class="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-500 text-center" th:text="#{values.isEmpty}">
+                                        </td>
+                                    </tr>
                                     <tr class="bg-white" th:each="customer : ${customers}">
                                         <td th:replace="fragments/table :: data(contents=${customer.fullName.fullName}, primary='true')"></td>
                                         <td th:replace="fragments/table :: data(contents=${customer.gender}, hideOnMobile='true')"></td>
@@ -39,8 +43,9 @@
                                     </tr>
                                 </tbody>
                             </table>
-                            
-                            <div th:replace="~{fragments/pagination :: controls(page=${customers})}"></div>
+                            <div th:if="${not customers.isEmpty()}">
+                                <div th:replace="~{fragments/pagination :: controls(page=${customers})}"></div>
+                            </div>
                         </div>
                     </div>
                 </div>

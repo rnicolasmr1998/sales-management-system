@@ -56,7 +56,7 @@ public class Product {
 
     @NotNull
     @Column(name = "cantidad_disponible")
-    private Double availableStock;
+    private BigDecimal availableStock;
 
     @NotNull
     @Enumerated(EnumType.STRING)
@@ -84,7 +84,7 @@ public class Product {
     private LocalDate deleteDate;
 
     public Product(String productName, String productBrand, String productDescription, BigDecimal purchasePriceUpdated,
-            Currency currency, Double availableStock, Measure measure, Category category) {
+            Currency currency, BigDecimal availableStock, Measure measure, Category category) {
         this.productName = productName;
         this.productBrand = productBrand;
         this.productDescription = productDescription;
@@ -93,5 +93,13 @@ public class Product {
         this.availableStock = availableStock;
         this.measure = measure;
         this.category = category;
+    }
+
+    public void incrementAvailableStock(BigDecimal amount) {
+        this.availableStock = this.availableStock.add(amount);
+    }
+
+    public void decrementAvailableStock(BigDecimal amount) {
+        this.availableStock = this.availableStock.subtract(amount);
     }
 }

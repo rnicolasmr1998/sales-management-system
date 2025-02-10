@@ -9,7 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.google.common.collect.ImmutableSet;
 import com.salesmanagementsystem.sales_management_system.entities.Product;
-import com.salesmanagementsystem.sales_management_system.forms.CreateProductParameters;
+import com.salesmanagementsystem.sales_management_system.parameters.CreateProductParameters;
 import com.salesmanagementsystem.sales_management_system.repositories.ProductRepository;
 
 @Service

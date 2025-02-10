@@ -38,4 +38,4 @@ node_modules
 node
 
 # Exclude local properties
-application-local.properties
+src/main/resources/application-local.properties

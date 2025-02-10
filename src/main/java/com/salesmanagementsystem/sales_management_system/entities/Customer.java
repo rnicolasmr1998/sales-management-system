@@ -70,4 +70,12 @@ public class Customer {
         this.phoneNumber = phoneNumber;
         this.debt = debt;
     }
+
+    public void incrementDebt(BigDecimal amount) {
+        this.debt = this.debt.add(amount);
+    }
+
+    public void decrementDebt(BigDecimal amount) {
+        this.debt = this.debt.subtract(amount);
+    }
 }

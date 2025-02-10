@@ -1,5 +1,6 @@
 package com.salesmanagementsystem.sales_management_system.entities;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.UUID;
 
@@ -14,13 +15,13 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "proveedor")
-@Getter
-@AllArgsConstructor
+@Data
+@NoArgsConstructor
 public class Supplier {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -41,8 +42,12 @@ public class Supplier {
     private PhoneNumber phoneNumber;
 
     @NotNull
-    @Column(name = "deuda")
-    private Double supplierDebt;
+    @Column(name = "deuda_soles")
+    private BigDecimal supplierDebtSoles;
+
+    @NotNull
+    @Column(name = "deuda_dolares")
+    private BigDecimal supplierDebtDollars;
 
     @NotNull
     @Column(name = "estado_proveedor")
@@ -59,6 +64,27 @@ public class Supplier {
     @Column(name = "fecha_eliminacion")
     private LocalDate deleteDate;
 
-    protected Supplier() {
+    public Supplier(String ruc, String supplierName, PhoneNumber phoneNumber, BigDecimal supplierDebtSoles, BigDecimal supplierDebtDollars) {
+        this.ruc = ruc;
+        this.supplierName = supplierName;
+        this.phoneNumber = phoneNumber;
+        this.supplierDebtSoles = supplierDebtSoles;
+        this.supplierDebtDollars = supplierDebtDollars;
+    }
+
+    public void incrementDebtSoles(BigDecimal amount) {
+        this.supplierDebtSoles = this.supplierDebtSoles.add(amount);
+    }
+
+    public void decrementDebtSoles(BigDecimal amount) {
+        this.supplierDebtSoles = this.supplierDebtSoles.subtract(amount);
+    }
+
+    public void incrementDebtDollars(BigDecimal amount) {
+        this.supplierDebtDollars = this.supplierDebtDollars.add(amount);
+    }
+
+    public void decrementDebtDollars(BigDecimal amount) {
+        this.supplierDebtDollars = this.supplierDebtDollars.subtract(amount);
     }
 }

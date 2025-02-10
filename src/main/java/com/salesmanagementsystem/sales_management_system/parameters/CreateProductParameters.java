@@ -1,4 +1,4 @@
-package com.salesmanagementsystem.sales_management_system.forms;
+package com.salesmanagementsystem.sales_management_system.parameters;
 
 import java.math.BigDecimal;
 
@@ -17,7 +17,7 @@ public class CreateProductParameters {
     private final String productDescription;
     private final BigDecimal purchasePriceUpdated;
     private final Currency currency;
-    private final Double availableStock;
+    private final BigDecimal availableStock;
     private final Measure measure;
     private final Category category;
 }

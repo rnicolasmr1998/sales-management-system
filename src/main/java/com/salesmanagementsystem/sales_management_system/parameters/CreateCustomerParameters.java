@@ -1,4 +1,4 @@
-package com.salesmanagementsystem.sales_management_system.forms;
+package com.salesmanagementsystem.sales_management_system.parameters;
 
 import java.math.BigDecimal;
 

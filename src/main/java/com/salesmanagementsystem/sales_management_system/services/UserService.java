@@ -5,7 +5,7 @@ import org.springframework.data.domain.Pageable;
 
 import com.google.common.collect.ImmutableSet;
 import com.salesmanagementsystem.sales_management_system.entities.User;
-import com.salesmanagementsystem.sales_management_system.forms.CreateUserParameters;
+import com.salesmanagementsystem.sales_management_system.parameters.CreateUserParameters;
 
 public interface UserService {
     User createUser(CreateUserParameters parameters);
