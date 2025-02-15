@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>3.4.2</version>
-        <relativePath/>
+        <relativePath />
         <!-- lookup parent from repository -->
     </parent>
     <groupId>com.salesmanagementsystem</groupId>
@@ -13,18 +15,18 @@
     <version>0.0.1-SNAPSHOT</version>
     <name>SalesManagementSystem</name>
     <description>Demo project for Spring Boot</description>
-    <url/>
+    <url />
     <licenses>
-        <license/>
+        <license />
     </licenses>
     <developers>
-        <developer/>
+        <developer />
     </developers>
     <scm>
-        <connection/>
-        <developerConnection/>
-        <tag/>
-        <url/>
+        <connection />
+        <developerConnection />
+        <tag />
+        <url />
     </scm>
     <properties>
         <java.version>21</java.version>
@@ -34,6 +36,12 @@
         <frontend-maven-plugin.npmVersion>10.9.2</frontend-maven-plugin.npmVersion>
     </properties>
     <dependencies>
+        <!-- Spring Boot Starter Validation-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-validation</artifactId>
+            <version>3.4.2</version>
+        </dependency>
 
         <!-- Java Faker -->
         <dependency>
@@ -78,7 +86,7 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
         </dependency>
-        
+
         <!-- Spring Boot Starter Thymeleaf -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -196,13 +204,13 @@
                     </executions>
                 </plugin>
                 <plugin>
-                <groupId>io.github.wimdeblauwe</groupId>
-                <artifactId>jpearl-maven-plugin</artifactId>
-                <version>2.0.1</version>
-                <configuration>
-                    <basePackage>com.salesmanagementsystem.sales_management_system</basePackage>
-                </configuration>
-            </plugin>
+                    <groupId>io.github.wimdeblauwe</groupId>
+                    <artifactId>jpearl-maven-plugin</artifactId>
+                    <version>2.0.1</version>
+                    <configuration>
+                        <basePackage>com.salesmanagementsystem.sales_management_system</basePackage>
+                    </configuration>
+                </plugin>
             </plugins>
         </pluginManagement>
     </build>

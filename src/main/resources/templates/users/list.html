@@ -10,9 +10,11 @@
 
 <body>
     <div layout:fragment="page-content">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
-            <h1 class="text-2xl font-semibold text-gray-900" th:text="#{users.title}"></h1>
+        <!-- tag::title[] -->
+        <div
+            th:replace="fragments/titles :: title-with-button(#{users.title}, 'user-add', #{users.add}, @{/users/create})">
         </div>
+        <!-- end::title[] -->
         <div class="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
             <div class="py-4">
                 <div class="flex flex-col">
@@ -23,23 +25,40 @@
                                 <thead>
                                     <tr>
                                         <th th:replace="fragments/table :: header(title=#{user.name})"></th>
-                                        <th th:replace="fragments/table :: header(title=#{user.gender}, hideOnMobile='true')"></th>
-                                        <th th:replace="fragments/table :: header(title=#{user.birthday}, hideOnMobile='true')"></th>
-                                        <th th:replace="fragments/table :: header(title=#{user.email}, hideOnMobile='true')"></th>
+                                        <th
+                                            th:replace="fragments/table :: header(title=#{user.gender}, hideOnMobile='true')">
+                                        </th>
+                                        <th
+                                            th:replace="fragments/table :: header(title=#{user.birthday}, hideOnMobile='true')">
+                                        </th>
+                                        <th
+                                            th:replace="fragments/table :: header(title=#{user.email}, hideOnMobile='true')">
+                                        </th>
                                         <th th:replace="fragments/table :: header(title='')"></th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr th:if="${users.isEmpty()}">
-                                        <td colspan="5" class="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-500 text-center" th:text="#{values.isEmpty}">
+                                        <td colspan="5"
+                                            class="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-500 text-center"
+                                            th:text="#{values.isEmpty}">
                                         </td>
                                     </tr>
                                     <tr class="bg-white" th:each="user : ${users}">
-                                        <td th:replace="fragments/table :: data(contents=${user.fullName.fullName}, primary='true')"></td>
-                                        <td th:replace="fragments/table :: data(contents=${user.gender}, hideOnMobile='true')"></td>
-                                        <td th:replace="fragments/table :: data(contents=${user.birthday}, hideOnMobile='true')"></td>
-                                        <td th:replace="fragments/table :: data(contents=${user.email.asString()}, hideOnMobile='true')"></td>
-                                        <td th:replace="fragments/table :: dataWithLink(linkText=#{edit}, linkUrl='#')"></td>
+                                        <td
+                                            th:replace="fragments/table :: data(contents=${user.fullName.fullName}, primary='true')">
+                                        </td>
+                                        <td
+                                            th:replace="fragments/table :: data(contents=${user.gender}, hideOnMobile='true')">
+                                        </td>
+                                        <td
+                                            th:replace="fragments/table :: data(contents=${user.birthday}, hideOnMobile='true')">
+                                        </td>
+                                        <td
+                                            th:replace="fragments/table :: data(contents=${user.email.asString()}, hideOnMobile='true')">
+                                        </td>
+                                        <td th:replace="~{fragments/table :: dataWithLink(#{edit}, @{'/users/'+ ${user.UserId.toString()}})}">
+                                        </td>
                                     </tr>
                                 </tbody>
                             </table>

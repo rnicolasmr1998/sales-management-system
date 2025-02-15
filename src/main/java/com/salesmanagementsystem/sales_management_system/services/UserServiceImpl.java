@@ -1,14 +1,19 @@
 package com.salesmanagementsystem.sales_management_system.services;
 
-import java.time.LocalDate;
+import java.util.Optional;
+import java.util.UUID;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.orm.ObjectOptimisticLockingFailureException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.google.common.collect.ImmutableSet;
+import com.salesmanagementsystem.sales_management_system.editions.EditUserParameters;
+import com.salesmanagementsystem.sales_management_system.embbedables.Email;
 import com.salesmanagementsystem.sales_management_system.entities.User;
+import com.salesmanagementsystem.sales_management_system.exceptions.UserNotFoundException;
 import com.salesmanagementsystem.sales_management_system.parameters.CreateUserParameters;
 import com.salesmanagementsystem.sales_management_system.repositories.UserRepository;
 
@@ -29,9 +34,6 @@ public class UserServiceImpl implements UserService {
                 parameters.getBirthday(),
                 parameters.getEmail(),
                 parameters.getPhoneNumber());
-        user.setUserStatus(true);
-        user.setRegistrationDate(LocalDate.now());
-        user.setLastUpdateDate(LocalDate.now());
         return repository.save(user);
     }
 
@@ -45,5 +47,30 @@ public class UserServiceImpl implements UserService {
     @Transactional(readOnly = true)
     public Page<User> getUsers(Pageable pageable) {
         return repository.findAll(pageable);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public boolean userWithEmailExists(Email email) {
+        return repository.existsByEmail(email);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Optional<User> getUser(UUID userId) {
+        return repository.findById(userId);
+    }
+
+    @Override
+    @Transactional(readOnly = false)
+    public User editUser(UUID userId, EditUserParameters parameters) {
+        User user = repository.findById(userId)
+                .orElseThrow(() -> new UserNotFoundException(userId));
+        if (parameters.getVersion() != user.getVersion()) {
+            throw new ObjectOptimisticLockingFailureException(User.class, userId.toString());
+        }
+        
+        parameters.update(user);
+        return user;
     }
 }
