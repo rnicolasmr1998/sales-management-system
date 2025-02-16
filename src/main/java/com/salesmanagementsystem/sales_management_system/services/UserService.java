@@ -19,4 +19,5 @@ public interface UserService {
     boolean userWithEmailExists(Email email);
     Optional<User> getUser(UUID userId);
     User editUser(UUID userId, EditUserParameters parameters);
+    void deleteUser(UUID userId);
 }

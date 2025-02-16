@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.salesmanagementsystem.sales_management_system.components.UrlBuilder;
 import com.salesmanagementsystem.sales_management_system.editions.EditUserFormData;
@@ -58,7 +59,7 @@ public class UserController {
     @PostMapping("/create")
     public String doCreateUser(
             @Validated(ValidationGroupSequence.class) @ModelAttribute("user") CreateUserFormData formData,
-            BindingResult bindingResult, Model model) {
+            BindingResult bindingResult, Model model, RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors()) {
             model.addAttribute("genders", List.of(Gender.HOMBRE, Gender.MUJER, Gender.OTRO));
             model.addAttribute("editMode", EditMode.CREAR);
@@ -66,6 +67,7 @@ public class UserController {
         }
 
         service.createUser(formData.toParameters());
+        redirectAttributes.addFlashAttribute("createdUserName", formData.getFirstName() + " " + formData.getLastName());
         return "redirect:/users";
     }
 
@@ -84,15 +86,35 @@ public class UserController {
     public String doEditUser(@PathVariable("id") UUID userId,
             @Validated(EditUserValidationGroupSequence.class) @ModelAttribute("user") EditUserFormData formData,
             BindingResult bindingResult,
-            Model model) {
+            Model model, RedirectAttributes redirectAttributes) {
+        User user = service.getUser(userId)
+                .orElseThrow(() -> new UserNotFoundException(userId));
         if (bindingResult.hasErrors()) {
             model.addAttribute("genders", List.of(Gender.HOMBRE, Gender.MUJER, Gender.OTRO));
             model.addAttribute("editMode", EditMode.ACTUALIZAR);
             return "users/edit";
         }
 
-        service.editUser(userId, formData.toParameters());
+        // Convertimos el usuario a EditUserFormData para comparar con el formulario
+        EditUserFormData userDataFromDB = EditUserFormData.fromUser(user);
 
+        // Si los datos no cambiaron, redirigir sin actualizar
+        if (userDataFromDB.equals(formData)) {
+            return "redirect:/users";
+        }
+
+        // Si los datos cambiaron, actualizar y mandar mensaje
+        service.editUser(userId, formData.toParameters());
+        redirectAttributes.addFlashAttribute("updatedUserName", user.getFullName().getFullName());
+        return "redirect:/users";
+    }
+
+    @PostMapping("/{id}/delete")
+    public String doDeleteUser(@PathVariable("id") UUID userId, RedirectAttributes redirectAttributes) {
+        User user = service.getUser(userId)
+                .orElseThrow(() -> new UserNotFoundException(userId));
+        service.deleteUser(userId);
+        redirectAttributes.addFlashAttribute("deletedUserName", user.getFullName().getFullName());
         return "redirect:/users";
     }
 

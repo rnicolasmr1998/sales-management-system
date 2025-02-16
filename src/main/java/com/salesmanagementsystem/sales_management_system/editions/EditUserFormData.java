@@ -1,5 +1,6 @@
 package com.salesmanagementsystem.sales_management_system.editions;
 
+import java.util.Objects;
 import java.util.UUID;
 
 import com.salesmanagementsystem.sales_management_system.embbedables.Email;
@@ -38,4 +39,26 @@ public class EditUserFormData extends CreateUserFormData {
                 new Email(getEmail()),
                 new PhoneNumber(getPhoneNumber()));
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o)
+            return true; // Son el mismo objeto
+        if (o == null || getClass() != o.getClass())
+            return false; // Diferente clase
+
+        EditUserFormData that = (EditUserFormData) o;
+
+        return Objects.equals(getFirstName(), that.getFirstName()) &&
+                Objects.equals(getLastName(), that.getLastName()) &&
+                getGender() == that.getGender() &&
+                Objects.equals(getBirthday(), that.getBirthday()) &&
+                Objects.equals(getEmail(), that.getEmail()) &&
+                Objects.equals(getPhoneNumber(), that.getPhoneNumber());
+    }
+
+    @Override
+public int hashCode() {
+    return Objects.hash(getFirstName(), getLastName(), getGender(), getBirthday(), getEmail(), getPhoneNumber());
+}
 }

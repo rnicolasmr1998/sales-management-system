@@ -36,6 +36,12 @@
         <frontend-maven-plugin.npmVersion>10.9.2</frontend-maven-plugin.npmVersion>
     </properties>
     <dependencies>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
+
         <!-- Spring Boot Starter Validation-->
         <dependency>
             <groupId>org.springframework.boot</groupId>

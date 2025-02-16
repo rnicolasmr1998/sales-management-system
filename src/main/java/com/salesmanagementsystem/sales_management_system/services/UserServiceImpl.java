@@ -73,4 +73,9 @@ public class UserServiceImpl implements UserService {
         parameters.update(user);
         return user;
     }
+
+    @Override
+    public void deleteUser(UUID userId) {
+        repository.deleteById(userId);
+    }
 }
