@@ -1,11 +1,12 @@
 package com.salesmanagementsystem.sales_management_system.entities;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import com.salesmanagementsystem.sales_management_system.embbedables.Currency;
+import com.salesmanagementsystem.sales_management_system.enums.Currency;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -18,7 +19,9 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
+import jakarta.persistence.Version;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -41,7 +44,11 @@ public class Purchase {
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @NotNull
     @JoinColumn(name = "id_compra")
-    private List<PurchaseDetail> purchaseDetails;
+    private List<PurchaseDetail> purchaseDetails = new ArrayList<>();
+
+    @NotNull
+    @Column(name = "cantidad_productos")
+    private Integer quantityProducts;
 
     @NotNull
     @Column(name = "total_compra")
@@ -58,12 +65,34 @@ public class Purchase {
 
     @NotNull
     @Column(name = "fecha_registro")
-    private LocalDate registrationDate;
+    private LocalDateTime registrationDate = LocalDateTime.now();
 
-    @NotNull
+    @Version
+    @Column(name = "version")
+    private long version;
+
     @Column(name = "fecha_actualizacion")
-    private LocalDate lastUpdateDate;
+    private LocalDateTime lastUpdateDate;
 
     @Column(name = "fecha_eliminacion")
-    private LocalDate deleteDate;
+    private LocalDateTime deleteDate;
+
+    public Purchase(Supplier supplier, List<PurchaseDetail> purchaseDetails, BigDecimal totalAmount, Currency currency) {
+        this.supplier = supplier;
+        this.purchaseDetails = purchaseDetails;
+        this.totalAmount = totalAmount;
+        this.currency = currency;
+        this.registrationDate = LocalDateTime.now();
+        this.purchaseStatus = true;
+    }
+
+    @PreUpdate
+    public void preUpdate() {
+        this.lastUpdateDate = LocalDateTime.now();
+    }
+
+    public void softDelete() {
+        this.deleteDate = LocalDateTime.now();
+        this.purchaseStatus = false;
+    }
 }

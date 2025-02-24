@@ -10,9 +10,25 @@
 
 <body>
     <div layout:fragment="page-content">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
-            <h1 class="text-2xl font-semibold text-gray-900" th:text="#{products.title}"></h1>
+        <!-- tag::title[] -->
+        <div
+            th:replace="fragments/titles :: title-with-button(#{products.title}, #{product.add}, @{/products/create})">
         </div>
+        <!-- end::title[] -->
+        <!-- tag::alert[] -->
+        <div th:if="${createdProductName}"> <!--.-->
+            <div th:replace="fragments/alerts :: success(#{product.create.success(${createdProductName})})"></div>
+            <!--.-->
+        </div>
+        <div th:if="${updatedProductName}"> <!--.-->
+            <div th:replace="fragments/alerts :: success(#{product.update.success(${updatedProductName})})"></div>
+            <!--.-->
+        </div>
+        <div th:if="${deletedProductName}"> <!--.-->
+            <div th:replace="fragments/alerts :: success(#{product.delete.success(${deletedProductName})})"></div>
+            <!--.-->
+        </div>
+        <!-- end::alert[] -->
         <div class="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
             <div class="py-4">
                 <div class="flex flex-col">
@@ -22,13 +38,12 @@
                             <table class="min-w-full">
                                 <thead>
                                     <tr>
-                                        <th th:replace="fragments/table :: header(title=#{product.name})"></th>
-                                        <th th:replace="fragments/table :: header(title=#{product.brand}, hideOnMobile='true')"></th>
-                                        <th th:replace="fragments/table :: header(title=#{product.price}, hideOnMobile='true')"></th>
-                                        <th th:replace="fragments/table :: header(title=#{product.currency}, hideOnMobile='true')"></th>
-                                        <th th:replace="fragments/table :: header(title=#{product.stock}, hideOnMobile='true')"></th>
-                                        <th th:replace="fragments/table :: header(title=#{product.measure}, hideOnMobile='true')"></th>
-                                        <th th:replace="fragments/table :: header(title='')"></th>
+                                        <th th:replace="~{fragments/table :: header(title=#{product.name})}"></th>
+                                        <th th:replace="~{fragments/table :: header(title=#{product.price}, hideOnMobile='true')}"></th>
+                                        <th th:replace="~{fragments/table :: header(title=#{product.currency}, hideOnMobile='true')}"></th>
+                                        <th th:replace="~{fragments/table :: header(title=#{product.stock}, hideOnMobile='true')}"></th>
+                                        <th th:replace="~{fragments/table :: header(title=#{product.measure}, hideOnMobile='true')}"></th>
+                                        <th th:replace="~{fragments/table :: header(title='')}"></th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -37,13 +52,19 @@
                                         </td>
                                     </tr>
                                     <tr class="bg-white" th:each="product : ${products}">
-                                        <td th:replace="fragments/table :: data(contents=${product.productName}, primary='true')"></td>
-                                        <td th:replace="fragments/table :: data(contents=${product.productBrand}, hideOnMobile='true')"></td>
-                                        <td th:replace="fragments/table :: data(contents=${product.purchasePriceUpdated}, hideOnMobile='true')"></td>
-                                        <td th:replace="fragments/table :: data(contents=${product.currency}, hideOnMobile='true')"></td>
-                                        <td th:replace="fragments/table :: data(contents=${product.availableStock}, hideOnMobile='true')"></td>
-                                        <td th:replace="fragments/table :: data(contents=${product.measure}, hideOnMobile='true')"></td>
-                                        <td th:replace="fragments/table :: dataWithLink(linkText=#{edit}, linkUrl='#')"></td>
+                                        <td th:replace="~{fragments/table :: data(contents=${product.productName + ' - ' + product.productBrand}, primary='true')}"></td>
+                                        <td th:replace="~{fragments/table :: data(contents=${product.purchasePriceUpdated}, hideOnMobile='true')}"></td>
+                                        <td th:replace="~{fragments/table :: data(contents=${product.currency}, hideOnMobile='true')}"></td>
+                                        <td th:replace="~{fragments/table :: data(contents=${product.availableStock}, hideOnMobile='true')}"></td>
+                                        <td th:replace="~{fragments/table :: data(contents=${product.measure}, hideOnMobile='true')}"></td>
+                                        <td th:replace="~{fragments/table :: actions(infoText=#{info},
+                                            infoUrl='#',
+                                            editText=#{edit},
+                                            editUrl=@{'/products/'+ ${product.productId.toString()}},
+                                            deleteText=#{delete},
+                                            deleteUrl=@{/products/{id}/delete(id=${product.productId})},
+                                            deleteName=${product.productName + ' - ' + product.productBrand})}">
+                                        </td>
                                     </tr>
                                 </tbody>
                             </table>

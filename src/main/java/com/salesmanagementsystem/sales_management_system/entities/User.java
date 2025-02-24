@@ -7,9 +7,9 @@ import java.util.UUID;
 import com.salesmanagementsystem.sales_management_system.embbedables.Email;
 import com.salesmanagementsystem.sales_management_system.embbedables.EmailAttributeConverter;
 import com.salesmanagementsystem.sales_management_system.embbedables.FullName;
-import com.salesmanagementsystem.sales_management_system.embbedables.Gender;
 import com.salesmanagementsystem.sales_management_system.embbedables.PhoneNumber;
 import com.salesmanagementsystem.sales_management_system.embbedables.PhoneNumberAttributeConverter;
+import com.salesmanagementsystem.sales_management_system.enums.Gender;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Convert;

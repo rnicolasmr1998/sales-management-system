@@ -1,6 +1,10 @@
 package com.salesmanagementsystem.sales_management_system.validations;
 
+import java.util.Optional;
+
+import com.salesmanagementsystem.sales_management_system.editions.EditUserFormData;
 import com.salesmanagementsystem.sales_management_system.embbedables.Email;
+import com.salesmanagementsystem.sales_management_system.entities.User;
 import com.salesmanagementsystem.sales_management_system.forms.CreateUserFormData;
 import com.salesmanagementsystem.sales_management_system.services.UserService;
 
@@ -19,18 +23,38 @@ public class NotExistingUserValidator implements ConstraintValidator<NotExisting
     }
 
     // tag::isValid[]
-    @Override
     public boolean isValid(CreateUserFormData formData, ConstraintValidatorContext context) {
-        if (userService.userWithEmailExists(new Email(formData.getEmail()))) {
-            context.disableDefaultConstraintViolation();
-            context.buildConstraintViolationWithTemplate("{UserAlreadyExisting}")
-                    .addPropertyNode("email")
-                    .addConstraintViolation();
-
-            return false;
+        if (formData == null || formData.getEmail() == null) {
+            return false; // Validación temprana si el formulario o el email son nulos
         }
-
-        return true;
+    
+        Email email = new Email(formData.getEmail());
+    
+        // Verificar si el correo ya existe
+        Optional<User> existingUser = userService.findByEmail(email);
+    
+        if (existingUser.isPresent()) {
+            // Si es una edición, verificar si el correo pertenece a otro usuario
+            if (formData instanceof EditUserFormData editFormData) {
+                if (!existingUser.get().getUserId().equals(editFormData.getId())) {
+                    addConstraintViolation(context, "email", "{UserAlreadyExisting}");
+                    return false;
+                }
+            } else {
+                // Si es una creación, el correo no debe existir
+                addConstraintViolation(context, "email", "{UserAlreadyExisting}");
+                return false;
+            }
+        }
+    
+        return true; // El formulario es válido
     }
     // end::isValid[]
+
+    private void addConstraintViolation(ConstraintValidatorContext context, String propertyName, String message) {
+        context.disableDefaultConstraintViolation();
+        context.buildConstraintViolationWithTemplate(message)
+                .addPropertyNode(propertyName)
+                .addConstraintViolation();
+    }
 }

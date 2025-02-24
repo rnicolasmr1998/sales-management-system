@@ -1,10 +1,10 @@
 package com.salesmanagementsystem.sales_management_system.entities;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
-import com.salesmanagementsystem.sales_management_system.embbedables.Currency;
+import com.salesmanagementsystem.sales_management_system.enums.Currency;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -15,7 +15,9 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
+import jakarta.persistence.Version;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -37,7 +39,7 @@ public class SaleDetail {
 
     @NotNull
     @Column(name = "cantidad")
-    private Double quantity;
+    private BigDecimal quantity;
 
     @NotNull
     @Column(name = "precio_unitario_venta")
@@ -58,20 +60,36 @@ public class SaleDetail {
 
     @NotNull
     @Column(name = "fecha_registro")
-    private LocalDate registrationDate;
+    private LocalDateTime registrationDate = LocalDateTime.now();
+
+    @Version
+    @Column(name = "version")
+    private long version;
 
     @NotNull
     @Column(name = "fecha_actualizacion")
-    private LocalDate lastUpdateDate;
+    private LocalDateTime lastUpdateDate;
 
     @Column(name = "fecha_eliminacion")
-    private LocalDate deleteDate;
+    private LocalDateTime deleteDate;
 
-    public SaleDetail(Product product, Double quantity, BigDecimal unitePrice, BigDecimal subtotal, Currency currency) {
+    public SaleDetail(Product product, BigDecimal quantity, BigDecimal unitePrice, BigDecimal subtotal, Currency currency) {
         this.product = product;
         this.quantity = quantity;
         this.unitePrice = unitePrice;
-        this.subtotal = unitePrice.multiply(new BigDecimal(quantity));
+        this.subtotal = unitePrice.multiply(quantity);
         this.currency = currency;
+        this.registrationDate = LocalDateTime.now();
+        this.saleDetailStatus = true;
+    }
+
+    @PreUpdate
+    public void preUpdate() {
+        this.lastUpdateDate = LocalDateTime.now();
+    }
+
+    public void softDelete() {
+        this.deleteDate = LocalDateTime.now();
+        this.saleDetailStatus = false;
     }
 }

@@ -1,14 +1,19 @@
 package com.salesmanagementsystem.sales_management_system.services;
 
-import java.time.LocalDate;
+import java.util.Optional;
+import java.util.UUID;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.orm.ObjectOptimisticLockingFailureException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.google.common.collect.ImmutableSet;
+import com.salesmanagementsystem.sales_management_system.editions.EditProductParameters;
 import com.salesmanagementsystem.sales_management_system.entities.Product;
+import com.salesmanagementsystem.sales_management_system.entities.Supplier;
+import com.salesmanagementsystem.sales_management_system.exceptions.ObjectNotFoundException;
 import com.salesmanagementsystem.sales_management_system.parameters.CreateProductParameters;
 import com.salesmanagementsystem.sales_management_system.repositories.ProductRepository;
 
@@ -32,9 +37,6 @@ public class ProductServiceImpl implements ProductService {
                 parameters.getMeasure(),
                 parameters.getCategory());
         product.setPurchasePriceOld(parameters.getPurchasePriceUpdated());
-        product.setProductStatus(true);
-        product.setRegistrationDate(LocalDate.now());
-        product.setLastUpdateDate(LocalDate.now());
         return repository.save(product);
     }
 
@@ -48,5 +50,48 @@ public class ProductServiceImpl implements ProductService {
     @Transactional(readOnly = true)
     public Page<Product> getProducts(Pageable pageable) {
         return repository.findAll(pageable);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public boolean productWithProductNameExists(String productName) {
+        return repository.existsByProductName(productName);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public boolean productWithProductBrandExists(String productBrand) {
+        return repository.existsByProductName(productBrand);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Optional<Product> getProduct(UUID productId) {
+        return repository.findById(productId);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Optional<Product> findByProductBrandAndProductName(String productBrand, String productName) {
+        return repository.findByProductBrandAndProductName(productBrand, productName);
+    }
+
+    @Override
+    @Transactional
+    public Product editProduct(UUID productId, EditProductParameters parameters) {
+        Product product = repository.findById(productId)
+                .orElseThrow(() -> new ObjectNotFoundException(productId, "Producto"));
+        if (parameters.getVersion() != product.getVersion()) {
+            throw new ObjectOptimisticLockingFailureException(Supplier.class, productId.toString());
+        }
+        product.updatePurchasePrice(parameters.getPurchasePriceUpdated());
+        parameters.update(product);
+        return product;
+    }
+
+    @Override
+    @Transactional
+    public void deleteProduct(UUID productId) {
+        repository.deleteById(productId);
     }
 }

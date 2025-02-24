@@ -3,8 +3,8 @@ package com.salesmanagementsystem.sales_management_system.parameters;
 import java.math.BigDecimal;
 import java.util.UUID;
 
-import com.salesmanagementsystem.sales_management_system.embbedables.Currency;
-import com.salesmanagementsystem.sales_management_system.embbedables.PaymentMethod;
+import com.salesmanagementsystem.sales_management_system.enums.Currency;
+import com.salesmanagementsystem.sales_management_system.enums.PaymentMethod;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

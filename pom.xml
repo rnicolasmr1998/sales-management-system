@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.4.2</version>
+        <version>3.4.3</version>
         <relativePath />
         <!-- lookup parent from repository -->
     </parent>
@@ -35,6 +35,15 @@
         <frontend-maven-plugin.nodeVersion>v23.6.0</frontend-maven-plugin.nodeVersion>
         <frontend-maven-plugin.npmVersion>10.9.2</frontend-maven-plugin.npmVersion>
     </properties>
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>com.google.guava</groupId>
+                <artifactId>guava</artifactId>
+                <version>33.3.1-jre</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
     <dependencies>
 
         <dependency>
@@ -46,7 +55,6 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-validation</artifactId>
-            <version>3.4.2</version>
         </dependency>
 
         <!-- Java Faker -->

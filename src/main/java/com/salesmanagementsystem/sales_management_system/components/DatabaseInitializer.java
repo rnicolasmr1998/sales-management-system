@@ -3,10 +3,6 @@ package com.salesmanagementsystem.sales_management_system.components;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.util.List;
-import java.util.Random;
-import java.util.UUID;
-import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.boot.CommandLineRunner;
@@ -15,17 +11,14 @@ import org.springframework.stereotype.Component;
 
 import com.github.javafaker.Faker;
 import com.github.javafaker.Name;
-import com.salesmanagementsystem.sales_management_system.embbedables.Category;
-import com.salesmanagementsystem.sales_management_system.embbedables.Currency;
 import com.salesmanagementsystem.sales_management_system.embbedables.Email;
 import com.salesmanagementsystem.sales_management_system.embbedables.FullName;
-import com.salesmanagementsystem.sales_management_system.embbedables.Gender;
-import com.salesmanagementsystem.sales_management_system.embbedables.Measure;
-import com.salesmanagementsystem.sales_management_system.embbedables.PaymentMethod;
 import com.salesmanagementsystem.sales_management_system.embbedables.PhoneNumber;
-import com.salesmanagementsystem.sales_management_system.entities.Supplier;
+import com.salesmanagementsystem.sales_management_system.enums.Category;
+import com.salesmanagementsystem.sales_management_system.enums.Currency;
+import com.salesmanagementsystem.sales_management_system.enums.Gender;
+import com.salesmanagementsystem.sales_management_system.enums.Measure;
 import com.salesmanagementsystem.sales_management_system.parameters.CreateCustomerParameters;
-import com.salesmanagementsystem.sales_management_system.parameters.CreatePaymentSupplierParameters;
 import com.salesmanagementsystem.sales_management_system.parameters.CreateProductParameters;
 import com.salesmanagementsystem.sales_management_system.parameters.CreateSupplierParameters;
 import com.salesmanagementsystem.sales_management_system.parameters.CreateUserParameters;
@@ -44,8 +37,6 @@ public class DatabaseInitializer implements CommandLineRunner {
     private final CustomerService customerService;
     private final ProductService productService;
     private final SupplierService supplierService;
-    private final PaymentSupplierService paymentSupplierService;
-    private final SupplierRepository supplierRepository;
 
     public DatabaseInitializer(UserService userService, CustomerService customerService, ProductService productService,
             SupplierService supplierService, PaymentSupplierService paymentSupplierService,
@@ -54,8 +45,6 @@ public class DatabaseInitializer implements CommandLineRunner {
         this.customerService = customerService;
         this.productService = productService;
         this.supplierService = supplierService;
-        this.paymentSupplierService = paymentSupplierService;
-        this.supplierRepository = supplierRepository;
     }
 
     @Override
@@ -65,12 +54,10 @@ public class DatabaseInitializer implements CommandLineRunner {
             CreateCustomerParameters customerParameters = newRandomCustomerParameters();
             CreateProductParameters productParameters = newRandomProductParameters();
             CreateSupplierParameters supplierParameters = newRandomSupplierParameters();
-            CreatePaymentSupplierParameters paymentSupplierParameters = newRandomPaymentSupplierParameters();
             userService.createUser(userParameters);
             customerService.createCustomer(customerParameters);
             productService.createProduct(productParameters);
             supplierService.createSupplier(supplierParameters);
-            paymentSupplierService.createPaymentSupplier(paymentSupplierParameters);
         }
     }
 
@@ -113,17 +100,6 @@ public class DatabaseInitializer implements CommandLineRunner {
         BigDecimal supplierDebtSoles = BigDecimal.valueOf(faker.number().numberBetween(0, 1000));
         BigDecimal supplierDebtDollars = BigDecimal.valueOf(faker.number().numberBetween(0, 1000));
         return new CreateSupplierParameters(ruc, supplierName, phoneNumber, supplierDebtSoles, supplierDebtDollars);
-    }
-
-    private CreatePaymentSupplierParameters newRandomPaymentSupplierParameters() {
-        BigDecimal amount = BigDecimal.valueOf(faker.number().numberBetween(5, 100));
-        Currency currency = faker.options().option(Currency.class);
-        PaymentMethod paymentMethod = faker.options().option(PaymentMethod.class);
-        String note = faker.lorem().sentence();
-        List<UUID> productIds = supplierRepository.findAll().stream().map(Supplier::getSupplierId)
-                .collect(Collectors.toList());
-        UUID supplierId = productIds.get(new Random().nextInt(productIds.size()));
-        return new CreatePaymentSupplierParameters(amount, currency, paymentMethod, note, supplierId);
     }
 
     private String generateEmailLocalPart(FullName fullName) {

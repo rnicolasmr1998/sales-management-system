@@ -2,9 +2,9 @@ package com.salesmanagementsystem.sales_management_system.parameters;
 
 import java.math.BigDecimal;
 
-import com.salesmanagementsystem.sales_management_system.embbedables.Category;
-import com.salesmanagementsystem.sales_management_system.embbedables.Currency;
-import com.salesmanagementsystem.sales_management_system.embbedables.Measure;
+import com.salesmanagementsystem.sales_management_system.enums.Category;
+import com.salesmanagementsystem.sales_management_system.enums.Currency;
+import com.salesmanagementsystem.sales_management_system.enums.Measure;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

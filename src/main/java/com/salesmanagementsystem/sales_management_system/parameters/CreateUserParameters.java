@@ -4,8 +4,8 @@ import java.time.LocalDate;
 
 import com.salesmanagementsystem.sales_management_system.embbedables.Email;
 import com.salesmanagementsystem.sales_management_system.embbedables.FullName;
-import com.salesmanagementsystem.sales_management_system.embbedables.Gender;
 import com.salesmanagementsystem.sales_management_system.embbedables.PhoneNumber;
+import com.salesmanagementsystem.sales_management_system.enums.Gender;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

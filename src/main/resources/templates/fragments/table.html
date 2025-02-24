@@ -1,15 +1,14 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
 <body>
     <table>
         <thead>
             <tr>
                 <!-- tag::th[] -->
-                <th th:fragment="header(title)"
-                    th:with="hideOnMobile=${hideOnMobile?:false}"
+                <th th:fragment="header(title)" th:with="hideOnMobile=${hideOnMobile?:false}"
                     class="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider"
-                    th:classappend="${hideOnMobile == 'true' ? 'hidden sm:table-cell' : ''}"
-                    th:text="${title}">
+                    th:classappend="${hideOnMobile == 'true' ? 'hidden sm:table-cell' : ''}" th:text="${title}">
                 </th>
                 <!-- end::th[] -->
             </tr>
@@ -17,8 +16,7 @@
         <tbody>
             <tr>
                 <!-- tag::td[] -->
-                <td th:fragment="data(contents)"
-                    th:with="primary=${primary?: false}"
+                <td th:fragment="data(contents)" th:with="primary=${primary?: false}"
                     class="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-500"
                     th:classappend="|${primary ? 'font-medium text-gray-900' : ''} ${hideOnMobile == 'true' ? 'hidden sm:table-cell' : ''}|"
                     th:text="${contents}">
@@ -27,14 +25,30 @@
                 <!-- tag::tdWithLink[] -->
                 <td th:fragment="dataWithLink(linkText, linkUrl)"
                     class="px-6 py-4 whitespace-no-wrap text-right text-sm leading-5 font-medium">
-                    <a th:href="${linkUrl}"
-                        th:text="${linkText}"
-                        class="text-indigo-600 hover:text-indigo-900">Edit</a>
+                    <a th:href="${linkUrl}" th:text="${linkText}" class="text-indigo-600 hover:text-indigo-900"></a>
+                </td>
+                <!-- Fragmento: actions -->
+                <td th:fragment="actions(infoText, infoUrl, editText, editUrl, deleteText, deleteUrl, deleteName)"
+                    th:x-data="|{name: '${deleteName}', deleteUrl: '${deleteUrl}'}|"
+                    class="px-6 py-4 whitespace-no-wrap text-sm leading-5 font-medium">
+                    <!-- Contenedor principal -->
+                    <div class="flex flex-col sm:flex-row sm:justify-center sm:space-x-4 text-left sm:text-center">
+                        <!-- Enlace de Info -->
+                        <a th:href="${infoUrl}" class="text-blue-600 hover:text-blue-900 mb-2 sm:mb-0"
+                            th:text="${infoText}"></a>
+                        <!-- Enlace de Editar -->
+                        <a th:href="${editUrl}" class="text-indigo-600 hover:text-indigo-900 mb-2 sm:mb-0"
+                            th:text="${editText}"></a>
+                        <!-- Enlace de Eliminar -->
+                        <a href="javascript:void(0)" class="text-red-600 hover:text-red-900"
+                            @click="$dispatch('open-delete-modal', {name, deleteUrl})" th:text="${deleteText}"></a>
+                    </div>
                 </td>
                 <!-- end::tdWithLink[] -->
             </tr>
         </tbody>
     </table>
-    
+
 </body>
+
 </html>

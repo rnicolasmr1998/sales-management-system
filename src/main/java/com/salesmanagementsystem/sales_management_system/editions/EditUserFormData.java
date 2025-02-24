@@ -58,7 +58,7 @@ public class EditUserFormData extends CreateUserFormData {
     }
 
     @Override
-public int hashCode() {
-    return Objects.hash(getFirstName(), getLastName(), getGender(), getBirthday(), getEmail(), getPhoneNumber());
-}
+    public int hashCode() {
+        return Objects.hash(getFirstName(), getLastName(), getGender(), getBirthday(), getEmail(), getPhoneNumber());
+    }
 }

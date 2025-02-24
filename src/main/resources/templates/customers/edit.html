@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{layout/layout}" th:with="activeMenuItem='customers'">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="#{customers.title}"></title>
+</head>
+
+<body>
+    <div layout:fragment="page-content">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
+            <h1 class="text-2xl font-semibold text-gray-900"
+                th:text="${editMode?.name() == 'ACTUALIZAR'}?#{customer.edit}:#{customer.create}"></h1>
+        </div>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
+            <div class="py-4">
+                <div class="bg-white shadow px-4 py-5 sm:rounded-lg sm:p-6">
+                    <form id="customer-form" th:object="${customer}"
+                        th:action="${editMode?.name() == 'ACTUALIZAR'}?@{/customers/{id}(id=${customer.id})}:@{/customers/create}"
+                        method="post">
+                        <div>
+                            <div th:replace="fragments/forms :: fielderrors"></div>
+                            <div class="mt-6 grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
+                                <input type="hidden" th:field="*{version}" th:if="${editMode?.name() == 'ACTUALIZAR'}">
+                                <!-- Género -->
+                                <div class="sm:col-span-6">
+                                    <label class="block text-sm font-medium text-gray-700"
+                                        th:text="#{customer.gender}"></label>
+                                    <div>
+                                        <th:block th:each="possibleGender, iter : ${genders}">
+                                            <input type="radio" th:id="${'gender-' + possibleGender}"
+                                                th:field="*{gender}" th:value="${possibleGender}"
+                                                class="mr-1 focus:ring-green-500 h-4 w-4 text-green-500 border-gray-300"
+                                                th:classappend="${iter.index > 0 ? 'ml-4' : ''}">
+                                            <label th:for="${'gender-' + possibleGender}"
+                                                th:text="#{'Gender.' + ${possibleGender}}"
+                                                class="text-sm font-medium text-gray-700">
+                                            </label>
+                                        </th:block>
+                                        <p th:if="${#fields.hasErrors('gender')}"
+                                            th:text="${#strings.listJoin(#fields.errors('gender'), ', ')}"
+                                            class="mt-2 text-sm text-red-600" id="gender-error"></p>
+                                    </div>
+                                </div>
+                                <!-- Nombre -->
+                                <div
+                                    th:replace="~{fragments/forms :: textinput(labelText=#{customer.firstName}, fieldName='firstName', cssClass='sm:col-span-3')}">
+                                </div>
+                                <!-- Apellido -->
+                                <div
+                                    th:replace="~{fragments/forms :: textinput(#{customer.lastName}, 'lastName', 'sm:col-span-3')}">
+                                </div>
+                                <!-- Celular -->
+                                <div
+                                    th:replace="~{fragments/forms :: textinput(labelText=#{customer.phoneNumber}, fieldName='phoneNumber', cssClass='sm:col-span-2', inputType='tel')}">
+                                </div>
+                                <div class="sm:col-span-4"></div>
+                                <!-- Deuda -->
+                                <div
+                                    th:replace="~{fragments/forms :: textinput(labelText=#{customer.debt}, fieldName='debt', cssClass='sm:col-span-2')}">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Botones -->
+                        <div class="mt-8 border-t border-gray-200 pt-5">
+                            <div class="flex justify-end">
+                                <span class="inline-flex rounded-md shadow-sm">
+                                    <button type="button"
+                                        class="bg-white py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+                                        th:text="#{cancel}" th:onclick="'location.href=\'' + @{/customers} + '\''"></button>
+                                </span>
+                                <span class="ml-3 inline-flex rounded-md shadow-sm">
+                                    <button type="submit"
+                                        class="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+                                        th:text="${editMode?.name() == 'ACTUALIZAR'}?#{save}:#{create}"></button>
+                                </span>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+
+</html>

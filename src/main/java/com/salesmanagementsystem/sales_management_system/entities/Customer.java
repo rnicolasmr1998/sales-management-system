@@ -1,13 +1,13 @@
 package com.salesmanagementsystem.sales_management_system.entities;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 import com.salesmanagementsystem.sales_management_system.embbedables.FullName;
-import com.salesmanagementsystem.sales_management_system.embbedables.Gender;
 import com.salesmanagementsystem.sales_management_system.embbedables.PhoneNumber;
 import com.salesmanagementsystem.sales_management_system.embbedables.PhoneNumberAttributeConverter;
+import com.salesmanagementsystem.sales_management_system.enums.Gender;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Convert;
@@ -17,7 +17,9 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
+import jakarta.persistence.Version;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -51,24 +53,39 @@ public class Customer {
 
     @NotNull
     @Column(name = "estado_cliente")
-    private Boolean customerStatus;
+    private Boolean customerStatus = true;
 
     @NotNull
     @Column(name = "fecha_registro")
-    private LocalDate registrationDate;
+    private LocalDateTime registrationDate = LocalDateTime.now();
 
-    @NotNull
+    @Version
+    @Column(name = "version")
+    private long version;
+
     @Column(name = "fecha_actualizacion")
-    private LocalDate lastUpdateDate;
+    private LocalDateTime lastUpdateDate;
 
     @Column(name = "fecha_eliminacion")
-    private LocalDate deleteDate;
+    private LocalDateTime deleteDate;
 
     public Customer(FullName fullName, Gender gender, PhoneNumber phoneNumber, BigDecimal debt) {
         this.fullName = fullName;
         this.gender = gender;
         this.phoneNumber = phoneNumber;
         this.debt = debt;
+        this.registrationDate = LocalDateTime.now();
+        this.customerStatus = true;
+    }
+
+    @PreUpdate
+    public void preUpdate() {
+        this.lastUpdateDate = LocalDateTime.now();
+    }
+
+    public void softDelete() {
+        this.deleteDate = LocalDateTime.now();
+        this.customerStatus = false;
     }
 
     public void incrementDebt(BigDecimal amount) {

@@ -4,9 +4,10 @@ import java.time.LocalDate;
 
 import com.salesmanagementsystem.sales_management_system.embbedables.Email;
 import com.salesmanagementsystem.sales_management_system.embbedables.FullName;
-import com.salesmanagementsystem.sales_management_system.embbedables.Gender;
+
 import com.salesmanagementsystem.sales_management_system.embbedables.PhoneNumber;
 import com.salesmanagementsystem.sales_management_system.entities.User;
+import com.salesmanagementsystem.sales_management_system.enums.Gender;
 import com.salesmanagementsystem.sales_management_system.parameters.CreateUserParameters;
 
 public class EditUserParameters extends CreateUserParameters {

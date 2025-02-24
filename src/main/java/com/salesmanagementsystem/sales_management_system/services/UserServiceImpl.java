@@ -13,7 +13,7 @@ import com.google.common.collect.ImmutableSet;
 import com.salesmanagementsystem.sales_management_system.editions.EditUserParameters;
 import com.salesmanagementsystem.sales_management_system.embbedables.Email;
 import com.salesmanagementsystem.sales_management_system.entities.User;
-import com.salesmanagementsystem.sales_management_system.exceptions.UserNotFoundException;
+import com.salesmanagementsystem.sales_management_system.exceptions.ObjectNotFoundException;
 import com.salesmanagementsystem.sales_management_system.parameters.CreateUserParameters;
 import com.salesmanagementsystem.sales_management_system.repositories.UserRepository;
 
@@ -57,6 +57,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional(readOnly = true)
+    public Optional<User> findByEmail(Email email) {
+        return repository.findByEmail(email);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
     public Optional<User> getUser(UUID userId) {
         return repository.findById(userId);
     }
@@ -65,7 +71,7 @@ public class UserServiceImpl implements UserService {
     @Transactional(readOnly = false)
     public User editUser(UUID userId, EditUserParameters parameters) {
         User user = repository.findById(userId)
-                .orElseThrow(() -> new UserNotFoundException(userId));
+                .orElseThrow(() -> new ObjectNotFoundException(userId, "Usuario"));
         if (parameters.getVersion() != user.getVersion()) {
             throw new ObjectOptimisticLockingFailureException(User.class, userId.toString());
         }

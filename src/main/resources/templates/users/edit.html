@@ -35,7 +35,7 @@
                                                 th:field="*{gender}" th:value="${possibleGender}"
                                                 class="mr-1 focus:ring-green-500 h-4 w-4 text-green-500 border-gray-300"
                                                 th:classappend="${iter.index > 0 ? 'ml-4' : ''}">
-                                            <label th:for="${'gender-' + possibleGender}" 
+                                            <label th:for="${'gender-' + possibleGender}"
                                                 th:text="#{'Gender.' + ${possibleGender}}"
                                                 class="text-sm font-medium text-gray-700">
                                             </label>
@@ -51,10 +51,11 @@
                                 <!-- Apellido -->
                                 <div th:replace="~{fragments/forms :: textinput(#{user.lastName}, 'lastName', 'sm:col-span-3')}"></div>
                                 <!-- Email -->
-                                <div th:replace="~{fragments/forms :: textinput(labelText=#{user.email}, fieldName='email', cssClass='sm:col-span-4', inputType='email')}"></div>
+                                <div th:replace="~{fragments/forms :: textinput(labelText=#{user.email}, fieldName='email', cssClass='sm:col-span-3', inputType='email')}"></div>
+                                <div class="sm:col-span-3"></div>
                                 <!-- Celular -->
-                                <div th:replace="~{fragments/forms :: textinput(labelText=#{user.phoneNumber}, fieldName='phoneNumber', cssClass='sm:col-span-4', inputType='tel')}"></div>
-                                <div class="sm:col-span-2"></div>
+                                <div th:replace="~{fragments/forms :: textinput(labelText=#{user.phoneNumber}, fieldName='phoneNumber', cssClass='sm:col-span-2', inputType='tel')}"></div>
+                                <div class="sm:col-span-4"></div>
                                 <!-- Fecha de Nacimiento -->
                                 <div th:replace="~{fragments/forms :: textinput(labelText=#{user.birthday}, fieldName='birthday', cssClass='sm:col-span-2', placeholder=#{user.birthday.placeholder})}"></div>
                             </div>

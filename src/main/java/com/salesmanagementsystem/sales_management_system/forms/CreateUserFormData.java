@@ -5,8 +5,8 @@ import java.time.LocalDate;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import com.salesmanagementsystem.sales_management_system.embbedables.FullName;
-import com.salesmanagementsystem.sales_management_system.embbedables.Gender;
 import com.salesmanagementsystem.sales_management_system.embbedables.PhoneNumber;
+import com.salesmanagementsystem.sales_management_system.enums.Gender;
 import com.salesmanagementsystem.sales_management_system.parameters.CreateUserParameters;
 import com.salesmanagementsystem.sales_management_system.validations.NotExistingUser;
 import com.salesmanagementsystem.sales_management_system.validations.ValidationGroupOne;
@@ -27,7 +27,7 @@ public class CreateUserFormData {
     private String lastName;
 
     @NotNull
-    private Gender  gender;
+    private Gender gender;
     
     @NotBlank
     @Email(groups = ValidationGroupOne.class)
@@ -38,7 +38,7 @@ public class CreateUserFormData {
     private LocalDate birthday;
 
     @NotBlank
-    @Pattern(regexp = "^9\\d{8}$", groups = ValidationGroupTwo.class)
+    @Pattern(regexp = "^9\\d{8}$", groups = ValidationGroupOne.class)
     private String phoneNumber;
 
     public CreateUserParameters toParameters() {

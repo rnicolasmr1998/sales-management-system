@@ -1,12 +1,11 @@
 package com.salesmanagementsystem.sales_management_system.entities;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
-
-import com.salesmanagementsystem.sales_management_system.embbedables.Currency;
-import com.salesmanagementsystem.sales_management_system.embbedables.PaymentMethod;
+import com.salesmanagementsystem.sales_management_system.enums.Currency;
+import com.salesmanagementsystem.sales_management_system.enums.PaymentMethod;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -18,7 +17,9 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
+import jakarta.persistence.Version;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -61,14 +62,17 @@ public class PaymentSupplier {
 
     @NotNull
     @Column(name = "fecha_registro")
-    private LocalDate registrationDate;
+    private LocalDateTime registrationDate = LocalDateTime.now();
 
-    @NotNull
+    @Version
+    @Column(name = "version")
+    private long version;
+
     @Column(name = "fecha_actualizacion")
-    private LocalDate lastUpdateDate;
+    private LocalDateTime lastUpdateDate;
 
     @Column(name = "fecha_eliminacion")
-    private LocalDate deleteDate;
+    private LocalDateTime deleteDate;
 
     public PaymentSupplier(BigDecimal amountPaid, Currency currency, PaymentMethod paymentMethod, String note, Supplier supplier) {
         this.amountPaid = amountPaid;
@@ -76,5 +80,17 @@ public class PaymentSupplier {
         this.paymentMethod = paymentMethod;
         this.note = note;
         this.supplier = supplier;
+        this.registrationDate = LocalDateTime.now();
+        this.paymentCustomerStatus = true;
+    }
+
+    @PreUpdate
+    public void preUpdate() {
+        this.lastUpdateDate = LocalDateTime.now();
+    }
+
+    public void softDelete() {
+        this.deleteDate = LocalDateTime.now();
+        this.paymentCustomerStatus = false;
     }
 }

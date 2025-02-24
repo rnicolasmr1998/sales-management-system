@@ -18,13 +18,12 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.salesmanagementsystem.sales_management_system.components.UrlBuilder;
 import com.salesmanagementsystem.sales_management_system.editions.EditUserFormData;
-import com.salesmanagementsystem.sales_management_system.embbedables.EditMode;
-import com.salesmanagementsystem.sales_management_system.embbedables.Gender;
 import com.salesmanagementsystem.sales_management_system.entities.User;
-import com.salesmanagementsystem.sales_management_system.exceptions.UserNotFoundException;
+import com.salesmanagementsystem.sales_management_system.enums.EditMode;
+import com.salesmanagementsystem.sales_management_system.enums.Gender;
+import com.salesmanagementsystem.sales_management_system.exceptions.ObjectNotFoundException;
 import com.salesmanagementsystem.sales_management_system.forms.CreateUserFormData;
 import com.salesmanagementsystem.sales_management_system.services.UserService;
-import com.salesmanagementsystem.sales_management_system.validations.EditUserValidationGroupSequence;
 import com.salesmanagementsystem.sales_management_system.validations.ValidationGroupSequence;
 
 @Controller
@@ -51,7 +50,7 @@ public class UserController {
     @GetMapping("/create")
     public String createUserForm(Model model) {
         model.addAttribute("user", new CreateUserFormData());
-        model.addAttribute("genders", List.of(Gender.HOMBRE, Gender.MUJER, Gender.OTRO));
+        model.addAttribute("genders", List.of(Gender.values()));
         model.addAttribute("editMode", EditMode.CREAR);
         return "users/edit";
     }
@@ -74,7 +73,7 @@ public class UserController {
     @GetMapping("/{id}")
     public String editUserForm(@PathVariable("id") UUID userId, Model model) {
         User user = service.getUser(userId)
-                .orElseThrow(() -> new UserNotFoundException(userId));
+                .orElseThrow(() -> new ObjectNotFoundException(userId, "Usuario"));
 
         model.addAttribute("user", EditUserFormData.fromUser(user));
         model.addAttribute("genders", List.of(Gender.HOMBRE, Gender.MUJER, Gender.OTRO));
@@ -84,11 +83,11 @@ public class UserController {
 
     @PostMapping("/{id}")
     public String doEditUser(@PathVariable("id") UUID userId,
-            @Validated(EditUserValidationGroupSequence.class) @ModelAttribute("user") EditUserFormData formData,
+            @Validated(ValidationGroupSequence.class) @ModelAttribute("user") EditUserFormData formData,
             BindingResult bindingResult,
             Model model, RedirectAttributes redirectAttributes) {
         User user = service.getUser(userId)
-                .orElseThrow(() -> new UserNotFoundException(userId));
+                .orElseThrow(() -> new ObjectNotFoundException(userId, "Usuario"));
         if (bindingResult.hasErrors()) {
             model.addAttribute("genders", List.of(Gender.HOMBRE, Gender.MUJER, Gender.OTRO));
             model.addAttribute("editMode", EditMode.ACTUALIZAR);
@@ -112,7 +111,7 @@ public class UserController {
     @PostMapping("/{id}/delete")
     public String doDeleteUser(@PathVariable("id") UUID userId, RedirectAttributes redirectAttributes) {
         User user = service.getUser(userId)
-                .orElseThrow(() -> new UserNotFoundException(userId));
+                .orElseThrow(() -> new ObjectNotFoundException(userId, "Usuario"));
         service.deleteUser(userId);
         redirectAttributes.addFlashAttribute("deletedUserName", user.getFullName().getFullName());
         return "redirect:/users";

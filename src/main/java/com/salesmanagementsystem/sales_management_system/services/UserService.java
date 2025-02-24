@@ -20,4 +20,5 @@ public interface UserService {
     Optional<User> getUser(UUID userId);
     User editUser(UUID userId, EditUserParameters parameters);
     void deleteUser(UUID userId);
+    Optional<User> findByEmail(Email email);
 }

@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{layout/layout}" th:with="activeMenuItem='products'">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="#{products.title}"></title>
+</head>
+
+<body>
+    <div layout:fragment="page-content">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
+            <h1 class="text-2xl font-semibold text-gray-900"
+                th:text="${editMode?.name() == 'ACTUALIZAR'}?#{product.edit}:#{product.create}"></h1>
+        </div>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
+            <div class="py-4">
+                <div class="bg-white shadow px-4 py-5 sm:rounded-lg sm:p-6">
+                    <form id="customer-form" th:object="${product}"
+                        th:action="${editMode?.name() == 'ACTUALIZAR'}?@{/products/{id}(id=${product.id})}:@{/products/create}"
+                        method="post">
+                        <div>
+                            <div th:replace="fragments/forms :: fielderrors"></div>
+                            <div class="mt-6 grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
+                                <input type="hidden" th:field="*{version}" th:if="${editMode?.name() == 'ACTUALIZAR'}">
+                                <!-- Categoria -->
+                                <div class="sm:col-span-6">
+                                    <label class="block text-sm font-medium text-gray-700"
+                                        th:text="#{product.category}"></label>
+                                    <div>
+                                        <th:block th:each="possibleCategory, iter : ${categories}">
+                                            <input type="radio" th:id="${'category-' + possibleCategory}"
+                                                th:field="*{category}" th:value="${possibleCategory}"
+                                                class="mr-1 focus:ring-green-500 h-4 w-4 text-green-500 border-gray-300"
+                                                th:classappend="${iter.index > 0 ? 'ml-4' : ''}">
+                                            <label th:for="${'category' + possibleCategory}"
+                                                th:text="#{'Category.' + ${possibleCategory}}"
+                                                class="text-sm font-medium text-gray-700">
+                                            </label>
+                                        </th:block>
+                                        <p th:if="${#fields.hasErrors('category')}"
+                                            th:text="${#strings.listJoin(#fields.errors('category'), ', ')}"
+                                            class="mt-2 text-sm text-red-600" id="category-error"></p>
+                                    </div>
+                                </div>
+
+                                <!-- Nombre del producto -->
+                                <div
+                                    th:replace="~{fragments/forms :: textinput(labelText=#{product.name}, fieldName='productName', cssClass='sm:col-span-3')}">
+                                </div>
+                                <!-- Marca -->
+                                <div
+                                    th:replace="~{fragments/forms :: textinput(#{product.brand}, 'productBrand', 'sm:col-span-3')}">
+                                </div>
+                                <!-- Precio producto -->
+                                <div
+                                    th:replace="~{fragments/forms :: textinput(#{product.price}, 'purchasePriceUpdated', 'sm:col-span-2')}">
+                                </div>
+                                <!-- Moneda -->
+                                <div
+                                    th:replace="~{fragments/forms :: dropdown(#{product.currency}, 'currency', ${currencies}, 'Currency', 'sm:col-span-2')}">
+                                </div>
+                                <div class="sm:col-span-2"></div>
+                                <!-- Cantidad -->
+                                <div
+                                    th:replace="~{fragments/forms :: textinput(#{product.stock}, 'availableStock', 'sm:col-span-2')}">
+                                </div>
+                                <!-- Unidad -->
+                                <div
+                                    th:replace="~{fragments/forms :: dropdown(#{product.measure}, 'measure', ${measures}, 'Measure', 'sm:col-span-2')}">
+                                </div>
+                                <div class="sm:hidden sm:col-span-2"></div>
+                                <!-- Descripcion -->
+                                
+                            </div>
+                        </div>
+
+                        <!-- Botones -->
+                        <div class="mt-8 border-t border-gray-200 pt-5">
+                            <div class="flex justify-end">
+                                <span class="inline-flex rounded-md shadow-sm">
+                                    <button type="button"
+                                        class="bg-white py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+                                        th:text="#{cancel}"
+                                        th:onclick="'location.href=\'' + @{/products} + '\''"></button>
+                                </span>
+                                <span class="ml-3 inline-flex rounded-md shadow-sm">
+                                    <button type="submit"
+                                        class="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+                                        th:text="${editMode?.name() == 'ACTUALIZAR'}?#{save}:#{create}"></button>
+                                </span>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+
+</html>

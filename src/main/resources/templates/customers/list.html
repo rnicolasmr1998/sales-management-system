@@ -10,9 +10,25 @@
 
 <body>
     <div layout:fragment="page-content">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
-            <h1 class="text-2xl font-semibold text-gray-900" th:text="#{customers.title}"></h1>
+        <!-- tag::title[] -->
+        <div
+            th:replace="fragments/titles :: title-with-button(#{customers.title}, #{customer.add}, @{/customers/create})">
         </div>
+        <!-- end::title[] -->
+        <!-- tag::alert[] -->
+        <div th:if="${createdCustomerName}"> <!--.-->
+            <div th:replace="fragments/alerts :: success(#{customer.create.success(${createdCustomerName})})"></div>
+            <!--.-->
+        </div>
+        <div th:if="${updatedCustomerName}"> <!--.-->
+            <div th:replace="fragments/alerts :: success(#{customer.update.success(${updatedCustomerName})})"></div>
+            <!--.-->
+        </div>
+        <div th:if="${deletedCustomerName}"> <!--.-->
+            <div th:replace="fragments/alerts :: success(#{customer.delete.success(${deletedCustomerName})})"></div>
+            <!--.-->
+        </div>
+        <!-- end::alert[] -->
         <div class="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
             <div class="py-4">
                 <div class="flex flex-col">
@@ -23,23 +39,46 @@
                                 <thead>
                                     <tr>
                                         <th th:replace="fragments/table :: header(title=#{customer.name})"></th>
-                                        <th th:replace="fragments/table :: header(title=#{customer.gender}, hideOnMobile='true')"></th>
-                                        <th th:replace="fragments/table :: header(title=#{customer.phoneNumber}, hideOnMobile='true')"></th>
-                                        <th th:replace="fragments/table :: header(title=#{customer.debit}, hideOnMobile='true')"></th>
+                                        <th
+                                            th:replace="fragments/table :: header(title=#{customer.gender}, hideOnMobile='true')">
+                                        </th>
+                                        <th
+                                            th:replace="fragments/table :: header(title=#{customer.phoneNumber}, hideOnMobile='true')">
+                                        </th>
+                                        <th
+                                            th:replace="fragments/table :: header(title=#{customer.debt}, hideOnMobile='true')">
+                                        </th>
                                         <th th:replace="fragments/table :: header(title='')"></th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr th:if="${customers.isEmpty()}">
-                                        <td colspan="6" class="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-500 text-center" th:text="#{values.isEmpty}">
+                                        <td colspan="6"
+                                            class="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-500 text-center"
+                                            th:text="#{values.isEmpty}">
                                         </td>
                                     </tr>
                                     <tr class="bg-white" th:each="customer : ${customers}">
-                                        <td th:replace="fragments/table :: data(contents=${customer.fullName.fullName}, primary='true')"></td>
-                                        <td th:replace="fragments/table :: data(contents=${customer.gender}, hideOnMobile='true')"></td>
-                                        <td th:replace="fragments/table :: data(contents=${customer.phoneNumber.asString()}, hideOnMobile='true')"></td>
-                                        <td th:replace="fragments/table :: data(contents=${customer.debt}, hideOnMobile='true')"></td>
-                                        <td th:replace="fragments/table :: dataWithLink(linkText=#{edit}, linkUrl='#')"></td>
+                                        <td
+                                            th:replace="fragments/table :: data(contents=${customer.fullName.fullName}, primary='true')">
+                                        </td>
+                                        <td
+                                            th:replace="fragments/table :: data(contents=${customer.gender}, hideOnMobile='true')">
+                                        </td>
+                                        <td
+                                            th:replace="fragments/table :: data(contents=${customer.phoneNumber.asString()}, hideOnMobile='true')">
+                                        </td>
+                                        <td
+                                            th:replace="fragments/table :: data(contents=${customer.debt}, hideOnMobile='true')">
+                                        </td>
+                                        <td th:replace="~{fragments/table :: actions(infoText=#{info},
+                                            infoUrl='#',
+                                            editText=#{edit},
+                                            editUrl=@{'/customers/'+ ${customer.customerId.toString()}},
+                                            deleteText=#{delete},
+                                            deleteUrl=@{/customers/{id}/delete(id=${customer.customerId})},
+                                            deleteName=${customer.fullName.fullName})}">
+                                        </td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -52,6 +91,21 @@
             </div>
         </div>
     </div>
+    <!-- tag::modals-content[] -->
+    <div layout:fragment="modals-content">
+        <div
+            th:replace="~{fragments/modals :: deleteModal(titleKey='customer.delete.title', messageKey='customer.delete.confirmation')}">
+        </div>
+    </div>
+    <!-- end::modals-content[] -->
+    <!-- tag::modals-content-js[] -->
+    <th:block layout:fragment="page-scripts">
+        <!-- tag::success-js[] -->
+        <script th:src="@{/js/modal-delete-confirmation.js}"></script>
+        <script th:replace="~{fragments/alerts :: success-js}"></script>
+        <!-- end::success-js[] -->
+    </th:block>
+    <!-- end::modals-content-js[] -->
 </body>
 
 </html>
